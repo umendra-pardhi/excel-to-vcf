@@ -1,3 +1,11 @@
+/node_modules
+temp.js
+vcffromat.txt
+contacts.vcf
+contact.csv
+contact.xlsx
+sample.xlsx
+
 # Logs
 logs
 *.log

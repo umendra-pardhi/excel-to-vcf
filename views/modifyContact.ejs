@@ -1,0 +1,197 @@
+<div class="contact-set">
+
+    <% if (locals.keys) { %>
+
+        <p style="text-align: center;color: #0FBA6D;"> Check the boxes to include columns in the VCF file. <br>Use the dropdowns to map each checked column to the correct contact info type.</p>
+       
+        <div class="card-modify-contact">
+      
+                <table cellspacing="25">
+
+                    <% keys.forEach((ele,i)=> { %>
+                        <div class="row">
+                            <tr>
+                                <td>
+                                    <div class="item">
+
+                                        <div class="checkbox-wrapper-19">
+                                            <input type="checkbox" class="cbox" id="ch<%= i %>" checked />
+                                            <label for="ch<%= i %>" class="check-box">
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+
+                                    <div class="item">
+                                        <p>
+                                            <%= ele %>
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="item">
+                                        <select name="cdata" id="cdata" class="cdata">
+                                            <option value="X" disabled selected>-- Select Data --</option>
+                                            <option value="FN">First Name</option>
+                                            <option value="LN">Last Name</option>
+                                            <option value="EMAIL">Email</option>
+                                            <option value="MN">Mobile No</option>
+                                            <option value="WN">Work Tel</option>
+                                            <option value="HN">Home Tel</option>
+                                            <option value="ADR">Address</option>
+                                            <option value="ORG">Company</option>
+                                            <option value="TITLE">Description[Title]</option>
+                                            <option value="URL">WebSite</option>
+                                            <option value="BDAY">Birth day</option>
+                                        </select>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </div>
+
+
+
+                        <% }) %>
+
+                </table>
+                <div class="error">
+                    <p id="error-msg"></p>
+                </div>
+
+                <button id="btnconvert">Convert</button>
+
+        </div>
+        <% } %>
+
+</div>
+
+<script>
+
+    const cdata = document.querySelectorAll('.cdata');
+    const cbox = document.querySelectorAll('.cbox');
+    const btn = document.getElementById('btnconvert');
+    const err = document.getElementById('error-msg');
+    const contacts = "<%= locals.data %>";
+
+    const decodedData = contacts.replace(/&#34;/g, '"');
+
+    const jdata = JSON.parse(decodedData);
+    // for(i in contacts){
+    // console.log(jdata)
+    // }
+
+    const keystring = "<%= locals.keys %>";
+    const keys = keystring.split(',');
+    const check = {};
+    const format = {};
+    keys.map(i => {
+        check[i] = true;
+        format[i] = null;
+    });
+
+    cdata.forEach((ele, i) => {
+        ele.addEventListener('change', () => {
+            // console.log(i,ele.value);
+            format[keys[i]] = ele.value;
+            // console.log(format);
+        })
+
+    })
+
+    cbox.forEach((ele, i) => {
+        ele.addEventListener('change', () => {
+            // console.log(i,ele.checked)
+            check[keys[i]] = ele.checked;
+            // console.log(check);
+            ele.checked ? cdata[i].disabled = false : cdata[i].disabled = true;
+        })
+    })
+
+    //   console.log(keys,typeof(keys),check)
+
+    btn.addEventListener('click', () => {
+
+        // console.log(check)
+        // console.log(format)
+        const newArray = {};
+        const checkArr = {};
+
+        for (i in check) {
+            if (check[i]) {
+                newArray[format[i]] = i;
+                checkArr[i] = format[i];
+            }
+        }
+        // console.log(checkArr);
+
+        //duplicate rows && values check
+
+        const values = Object.values(checkArr);
+        // console.log("values: ",values);
+        let validateValues = true;
+        for (key in checkArr) {
+            if (checkArr[key] == null) {
+                validateValues = false;
+            }
+        }
+        if (validateValues) {
+            const seen = new Set();
+            const duplicates = new Set();
+
+            values.forEach(value => {
+                if (seen.has(value)) {
+                    duplicates.add(value);
+                } else {
+                    seen.add(value);
+                }
+            });
+            err.innerText = "";
+            if (duplicates.size > 0) {
+                console.log("Duplicated row is not allowed")
+                err.innerText = "Duplicated row is not allowed";
+            } else {
+                sendData(newArray);
+                err.innerText = "";
+            }
+
+        } else {
+            console.log('Please set value for all active rows');
+            err.innerText = "Please set value for all active rows";
+        }
+    })
+
+    const sendData = async (arr) => {
+
+        console.log("array: ", arr)
+
+        await fetch('http://localhost/downloadVcf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ contacts: JSON.stringify(jdata), arr: JSON.stringify(arr) }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                sessionStorage.setItem('contacts', JSON.stringify(jdata));
+                sessionStorage.setItem('arr', JSON.stringify(arr));
+
+                window.location.href = '/download';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+
+
+</script>

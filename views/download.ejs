@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download VCF</title>
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/download.css">
+    <!-- <link rel="stylesheet" href="./assets/css/output.css"> -->
+</head>
+
+<body>
+    <header>
+        <img id="xlsxico" src="./assets/img/excel-62.svg" alt="" width="50px" height="50px">
+        <img id="arrow" src="./assets/img/arrow-30.svg" alt="" width="50px" height="50px"
+            style="transform: rotate(-90deg);">
+        <img id="vcfico" src="./assets/img/vcf-1.svg" alt="" width="50px" height="50px">
+    </header>
+    <hr />
+
+    <div class="card-preview">
+        <h2 class="">Download VCF</h2>
+        <div class="preview">
+            <div class="h">
+
+                <p>Preview: </p>
+                <p style="color:#b10642" id="ccount"></p>
+            </div>
+  
+
+            <table border="1" cellpadding="10" cellspacing="0" cell id="table_preview">
+                <thead >
+                    <tr id="contact_col">
+                    </tr>
+                </thead>
+                <tbody id="contact_data">
+                   
+                </tbody>
+            </table>
+            <i id="morecontacts"></i>
+        </div>
+
+
+
+
+        <a href="/savevcf"><button>Download VCF</button></a>
+
+    </div>
+    <footer>
+        <p>Engineered by Umendra Pardhi</p>
+    </footer>
+
+    <script >
+        document.addEventListener("DOMContentLoaded", function () {
+            const contacts = sessionStorage.getItem('contacts');
+            const arr = sessionStorage.getItem('arr');
+            const table_preview=document.getElementById("table_preview");
+            const contact_col=document.getElementById("contact_col");
+            const contact_data=document.getElementById("contact_data");
+            const ccount=document.getElementById("ccount");
+            const morecontacts=document.getElementById('morecontacts');
+
+
+            const jcontacts = JSON.parse(contacts);
+            const jarr = JSON.parse(arr);
+
+            console.log(jarr)
+            console.log(jcontacts)
+
+            for (const [key, value] of Object.entries(jarr)) {
+                contact_col.innerHTML+=  `
+                    <th>
+                    ${value}
+                        </th>
+                    `;
+                }
+                let limit = jcontacts.length > 5 ? 5 : jcontacts.length;
+
+                ccount.innerText=`Total Contacts:${jcontacts.length}`;
+
+            jcontacts.slice(0, limit).map(person => {
+
+                let htmld=`<tr>`;
+
+                for (const [key, value] of Object.entries(jarr)) {
+                    htmld+=`<td>
+                    ${person[value]}
+                        </td>
+                        `;
+                }
+                htmld+=`</tr>`;
+                table_preview.innerHTML+= htmld;
+
+            });
+
+            if (jcontacts.length>5){
+                morecontacts.innerText+= `... ${jcontacts.length-5} more contacts`
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>

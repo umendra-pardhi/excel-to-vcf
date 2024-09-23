@@ -1,0 +1,38 @@
+
+.card-preview {
+    box-shadow: 1px 1px 10px #d6d6d6;
+    margin: 30px auto;
+    border-radius: 10px;
+    padding: 20px;
+    width: fit-content;
+    text-align: center;
+    background-color: #fff;
+}
+
+
+.preview {
+    text-align: left;
+    padding: 10px;
+    color: #8d8b8b;
+}
+
+.card-preview table {
+    margin: 5px;
+    border: 1px solid rgb(236, 170, 170) ;
+     border-collapse: collapse; 
+
+}
+.card-preview .preview th,td{
+    border: 1px solid rgba(148, 147, 147, 0.597) ; 
+     padding: 10px;
+}
+
+.card-preview th {
+    color: #0364B8;
+    padding: 5px;
+}
+
+.h{
+    display: flex;
+    justify-content: space-between;
+}
