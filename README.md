@@ -8,6 +8,12 @@ The VCF file format is compatible with both Android and iOS.
 https://exceltovcf.onrender.com
 ```
 
+### How to Use:
+
+[![](https://markdown-videos-api.jorgenkh.no/youtube/5Q1xCieLIfw)](https://youtu.be/5Q1xCieLIfw)
+
+
+
 ### Screenshots:
 
 
