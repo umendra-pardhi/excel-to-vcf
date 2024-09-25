@@ -1,1 +1,13 @@
 # excel-to-vcf
+
+Easily convert your Excel contacts to VCF (vCard) format, you can import, and share list of contacts in just one click! 
+The VCF file format is compatible with both Android and iOS.
+
+### Try it Now: 
+``` bash 
+https://exceltovcf.onrender.com
+```
+
+### Screenshots:
+
+
