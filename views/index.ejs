@@ -26,7 +26,7 @@
     </header>
     <hr />
 
-    <a id="downsample" href="/downloadsample"><img src="./assets/img/xlsx_download.webp"  width="25px" alt=""></a>
+    <a id="downsample" href="/downloadsample"><img src="./assets/img/xlsx_download.webp" width="25px" alt=""></a>
 
     <div class="title">
         <h2>Excel to VCF Converter</h2>
@@ -50,54 +50,68 @@
                 </label>
 
                 <input type="file" name="xlsx-file" id="xlsx-file" hidden
-                    accept=".csv,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    onchange="document.form.submit()">
+                    accept=".csv,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 
                 <!-- <button type="submit">upload</button> -->
+
+<br>
+
+<% if (locals.data & !locals.keys) { %>
+
+                <div id="loading">uploading file...</div>
+
+                <% } %>
+
                 <div id="fileInfo"></div>
             </form>
+
         </div>
 
     </div>
 
 
-    
+    <% if (!locals.data) { %>
+
+        <div class="section-desc">
+            <p>Easily convert your Excel contacts to VCF (vCard) format, you can import, and share list of contacts in
+                just one click!<br> The VCF file format is compatible with both Android and iOS.</p>
+
+            <!-- <p >How to Use</p> -->
+            <br>
+            <iframe src="https://www.youtube.com/embed/5Q1xCieLIfw?si=SSK1qQmTemfdDslx"
+                title="How to use Excel to VCF converter" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+        <% } %>
+
+            <%- include('modifyContact') %>
+
+                <footer>
+                    <p>Engineered by Umendra Pardhi</p>
+                </footer>
+
+                <script>
+                    const fileInput = document.getElementById('xlsx-file');
+                    const fileInfo = document.getElementById('fileInfo');
+                    const form = document.getElementById('uf');
+                    const loading = document.getElementById('loading');
+                    
+                    fileInput.addEventListener('change', (event) => {
+                      
+                        const file = event.target.files[0];
+                        const formData = new FormData(form);
+
+                        if (file) {
+
+                            form.submit();
+
+                        }
 
 
-<% if (!locals.data) { %>
- 
-    <div class="section-desc">
-        <p >Easily convert your Excel contacts to VCF (vCard) format, you can import, and share list of contacts in just one click!<br> The VCF file format is compatible with both Android and iOS.</p>
-  
-        <!-- <p >How to Use</p> -->
-         <br>
-        <iframe  src="https://www.youtube.com/embed/5Q1xCieLIfw?si=SSK1qQmTemfdDslx" title="How to use Excel to VCF converter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-
-<% } %>
-
-<%- include('modifyContact') %>
-
-        <footer>
-            <p>Engineered by Umendra Pardhi</p>
-        </footer>
-
-        <script>
-            const fileInput = document.getElementById('xlsx-file');
-            const fileInfo = document.getElementById('fileInfo');
-            const form = document.getElementById('uf');
-
-            fileInput.addEventListener('change', (event) => {
-
-                const file = event.target.files[0];
-                const formData = new FormData(form);
-
-                if (file) {
-                    form.submit();
-                }
-
-            })
-        </script>
+                    })
+                </script>
 </body>
 
 </html>

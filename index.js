@@ -15,32 +15,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
 
-
-//.........
-
-// const result = parser.parseXls2Json(
-//     fs.readFileSync('./contact.xlsx')
-    
-// );
-
-
-// result[0].map(
-//     (contact)=>{
-        
-//         var cont=`BEGIN:VCARD
-// VERSION:3.0
-// FN:${contact.Name} - ${contact.Year}
-// TEL;TYPE=CELL:${contact.Number}
-// ORG:ETSA
-// TITLE:${contact.Post}
-// END:VCARD\n`;
-
-// fs.appendFileSync('contacts.vcf',cont);
-
-//     }
-// );
-
-
 app.get('/download',(req,res)=>{
    res.render("download")
 })

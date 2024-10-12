@@ -19,25 +19,6 @@ const excelToJson = (req, res, next) => {
 
   );
 
-
-
-  //     result[0].map(
-  //         (contact)=>{
-
-  //             var cont=`BEGIN:VCARD
-  // VERSION:3.0
-  // FN:${contact.Name} - ${contact.Year}
-  // TEL;TYPE=CELL:${contact.Number}
-  // ORG:ETSA
-  // TITLE:${contact.Post}
-  // END:VCARD\n`;
-
-  //     fs.appendFileSync('contacts.vcf',cont);
-
-  //         }
-  //     );
-
-
   const firstContact = result[0][0];
   const keys = Object.keys(firstContact);
   const numberOfKeys = keys.length;
